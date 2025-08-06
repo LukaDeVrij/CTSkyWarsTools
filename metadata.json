@@ -1,0 +1,8 @@
+{
+    "name": "SWTools",
+    "creator": "LifelessNerd",
+    "description": "Suite of SkyWarsTools",
+    "version": "0.1",
+    "entry": "index.js",
+    "$schema": "../imports/CTAutocomplete/schema.json"
+  }
