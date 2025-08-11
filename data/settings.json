@@ -1,0 +1,26 @@
+[
+    {
+        "category": "Autododge",
+        "settings": [
+            {
+                "type": 6,
+                "name": "autododgeEnabled",
+                "value": true
+            },
+            {
+                "type": 2,
+                "name": "autododgeList"
+            },
+            {
+                "type": 6,
+                "name": "autododgeSoundEnabled",
+                "value": true
+            },
+            {
+                "type": 6,
+                "name": "autododgeLobby",
+                "value": true
+            }
+        ]
+    }
+]

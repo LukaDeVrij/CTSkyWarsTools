@@ -14,7 +14,7 @@ register("command", (username) => {
         ChatLib.chat('&cUsername is missing or undefined.');
         return;
     }
-    fetchInfo(username).then((data) => {
+    fetchSkywars(username).then((data) => {
 
         if (!data) {
             console.log('Player does not exist or is nicked. (2)');
@@ -46,7 +46,7 @@ register("worldLoad", () => {
             tablist = Player.getPlayer().field_71174_a.func_175106_d().map(v => v.func_178845_a().getName());
             fetchTablist(tablist);
         }
-    }, 500);
+    }, 200);
 
 });
 
@@ -58,7 +58,7 @@ register("chat", (player, event) => {
         setTabName(prefix, player);
         return;
     }
-    fetchInfo(player)
+    fetchSkywars(player)
         .then((data) => {
             // If it errors, data is undefined, this is handled in functions below
             let prefix = saveResponseInCache(data, player);
@@ -67,7 +67,7 @@ register("chat", (player, event) => {
 
 }).setCriteria("${player} has joined").setContains();
 
-function fetchInfo(ign) {
+function fetchSkywars(ign) {
     if (!ign) {
         console.error('IGN is missing or undefined.');
         return Promise.resolve(null);
@@ -100,7 +100,7 @@ function fetchTablist(tablist) {
             return Promise.resolve();
         }
         setTimeout(() => {
-            fetchInfo(playerName).then((data) => {
+            fetchSkywars(playerName).then((data) => {
                 let prefix = saveResponseInCache(data, playerName);
                 setTabName(prefix, playerName);
             });

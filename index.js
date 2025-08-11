@@ -1,7 +1,8 @@
 const modules = [
     { path: "./submodules/experience.js", name: "SkyWars Game Experience" },
     { path: "./submodules/swt.js", name: "SkyWars Levels" },
-    { path: "./submodules/autododge.js", name: "Autododge" }
+    { path: "./submodules/autododge.js", name: "Autododge" },
+    { path: "./submodules/testing.js", name: "testing" },
 ];
 
 const loadModules = () => {
@@ -15,7 +16,6 @@ const loadModules = () => {
             const end = Date.now();
             const elapsed = end - start;
             total += elapsed;
-            //harddebug(`${name} loaded, took ${elapsed}ms`);
         } catch (e) {
             console.log(`&cError loading ${name} module: ${e}`);
         }
@@ -23,4 +23,14 @@ const loadModules = () => {
     console.log(`Loaded ${modules.length} modules in ${total}ms`);
 };
 
+require('./ameterasu/amaterasu.js');
+
 loadModules();
+
+
+
+
+
+
+
+
