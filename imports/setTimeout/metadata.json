@@ -1,8 +1,0 @@
-{
-  "name": "setTimeout",
-  "creator": "settimeout nerd",
-  "description": "Adds setTimeout, setInterval, etc polyfills",
-  "isRequired": true,
-  "version": "2.0.0",
-  "changelog": "Converted to use Executors instead of Timers. Should be more performant."
-}

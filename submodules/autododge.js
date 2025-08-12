@@ -1,8 +1,10 @@
 /// <reference types="../imports/CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
-import { setTimeout, clearTimeout } from "../imports/setTimeout/index";
-import PogObject from "../imports/PogData/index.js";
+import { setTimeout, clearTimeout } from "../../setTimeout/index";
+import PogObject from "../../PogData/index.js";
+
+import settings from "../amaterasu/config.js";
 
 let dodgingEngaged = false;
 let timeout = null;
@@ -13,14 +15,15 @@ let dodgeMapsData = new PogObject(
 	{
 		dodgeList: ["Chronos"],
 	},
-	"autododgemaps"
+	"autododgemaps.json"
 );
 
 register("worldLoad", () => {
+	if (!settings.autododgeEnabled) return;
+
 	if (dodgingEngaged) {
 		clearTimeout(timeout);
 		dodgingEngaged = false;
-		soundI = 0;
 	}
 	if (typeof worldLoadTimeout !== "undefined") clearTimeout(worldLoadTimeout);
 	worldLoadTimeout = setTimeout(() => {
@@ -32,7 +35,6 @@ const sound = new Sound({ source: "alert.ogg" });
 sound.setCategory("master");
 sound.setVolume(1);
 
-let soundI = 0;
 //Cancels dodging if the player is sneaking
 register("step", () => {
 	if (Player.isSneaking() && dodgingEngaged) {
@@ -40,7 +42,6 @@ register("step", () => {
 		ChatLib.chat("&cDodging cancelled!");
 		Client.showTitle("", "&cDodging cancelled", 0, 20, 0);
 		dodgingEngaged = false;
-		soundI = 0;
 	}
 }).setDelay(1);
 
@@ -48,22 +49,30 @@ register("step", () => {
 register("chat", (event) => {
 	if (dodgingEngaged) {
 		clearTimeout(timeout);
-		ChatLib.chat("&cCould not queue yet, went to lobby!");
 		Client.showTitle("", "&cDodging cancelled", 0, 20, 0);
+
 		dodgingEngaged = false;
-		soundI = 0;
-		ChatLib.command("lobby");
+
+		if (settings.autododgeLobby) {
+			ChatLib.chat(
+				"&cCould not queue yet, went to lobby as a last resort! Wanted to play anyway? Change this setting in the config."
+			);
+			ChatLib.command("lobby");
+		}
 	}
 })
 	.setCriteria("The game starts in 1 second!")
 	.setExact();
 
 function initiateDodgeCheck() {
+	let mode;
+	let map;
+	let maxPlayers;
 	try {
 		// First we check mode and max players
-		let mode = Scoreboard.getLines()[2].getName().split("Mode: ")[1];
-		let map = Scoreboard.getLines()[3].getName().split("Map: ")[1];
-		let maxPlayers = Scoreboard.getLines()[7].getName().split("Players: ")[1];
+		mode = Scoreboard.getLines()[2].getName().split("Mode: ")[1];
+		map = Scoreboard.getLines()[3].getName().split("Map: ")[1];
+		maxPlayers = Scoreboard.getLines()[7].getName().split("Players: ")[1];
 
 		let command = "play ";
 		map = map.replaceAll("§a", "");
@@ -74,7 +83,6 @@ function initiateDodgeCheck() {
 		if (!mode || !map || !maxPlayers) {
 			// We are not in a game
 			dodgingEngaged = false;
-			soundI = 0;
 			return;
 		}
 		console.log("Checking if we should dodge...");
@@ -84,8 +92,11 @@ function initiateDodgeCheck() {
 			// Do not dodge if the game is not solo
 			return;
 		}
+
 		if (mode.includes("Normal")) {
 			command += "normal";
+		} else if (mode.includes("Insane")) {
+			command += "insane";
 		} else {
 			// Do not dodge if the game is insane/mini/mega
 			return;
@@ -101,7 +112,7 @@ function initiateDodgeCheck() {
 		ChatLib.chat("&aMap &e" + map + "&a is on dodge list! Dodging in &e5&a seconds...");
 		ChatLib.chat("&cSNEAK TO CANCEL");
 		Client.showTitle("&cDodging " + map, "SNEAK TO CANCEL", 20, 100, 20);
-		sound.play();
+		if (settings.autododgeSoundEnabled) sound.play();
 
 		// Engage dodge in 5 seconds
 		timeout = setTimeout(() => {
@@ -118,15 +129,15 @@ function initiateDodgeCheck() {
 		dodgingEngaged = true;
 	} catch (e) {
 		console.warn("Error in initiateDodgeCheck. We are probably not in SkyWars.");
-		//console.error(e);
+		console.warn("map: " + map + ", mode: " + mode + ", maxPlayers: " + maxPlayers);
 		dodgingEngaged = false;
-		soundI = 0;
 	}
 }
 
 // Player interaction
 register("command", (...args) => {
 	if (!args[0]) {
+		ChatLib.chat("Autododge Status: " + (settings.autododgeEnabled ? "&aEnabled" : "&cDisabled"));
 		ChatLib.chat("Usage:\n/autododge add <mapName>\n/autododge remove <mapName>\n/autododge list");
 		return;
 	}
@@ -137,7 +148,8 @@ register("command", (...args) => {
 			if (dodgeMapsData.dodgeList.length === 0) {
 				ChatLib.chat("&eDodge list is empty.");
 			} else {
-				ChatLib.chat("&aDodge list: &e" + dodgeMapsData.dodgeList.join(", "));
+				ChatLib.chat("&cYou will autododge the following maps in Solo Normal/Insane:");
+				ChatLib.chat("&a" + dodgeMapsData.dodgeList.join("&e, &a"));
 			}
 			break;
 		case "add":
