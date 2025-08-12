@@ -2,9 +2,9 @@
 /// <reference lib="es2015" />
 
 import { setTimeout, clearTimeout } from "../../setTimeout/index";
-import PogObject from "../../PogData/index.js";
+import PogObject from "../../PogData/index";
 
-import settings from "../amaterasu/config.js";
+import settings from "../amaterasu/config";
 
 let dodgingEngaged = false;
 let timeout = null;

@@ -1,8 +1,7 @@
 const modules = [
-    { path: "./submodules/experience.js", name: "SkyWars Game Experience" },
-    { path: "./submodules/swt.js", name: "SkyWars Levels" },
-    { path: "./submodules/autododge.js", name: "Autododge" },
-    // { path: "./submodules/testing.js", name: "testing" },
+    { path: "./submodules/experience", name: "SkyWars Game Experience" },
+    { path: "./submodules/swt", name: "SkyWars Levels" },
+    { path: "./submodules/autododge", name: "Autododge" },
 ];
 
 const loadModules = () => {
@@ -17,13 +16,13 @@ const loadModules = () => {
             const elapsed = end - start;
             total += elapsed;
         } catch (e) {
-            console.log(`&cError loading ${name} module: ${e}`);
+            console.log(`&cError loading ${name} module: ${e.stack || e}`);
         }
     }
     console.log(`Loaded ${modules.length} modules in ${total}ms`);
 };
 
-require('./amaterasu/amaterasu.js');
+require('./amaterasu/config');
 
 loadModules();
 
