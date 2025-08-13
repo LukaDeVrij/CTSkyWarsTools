@@ -1,7 +1,7 @@
 /// <reference types="../imports/CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
-import settings from "../amaterasu/config.js";
+import settings from "../amaterasu/config";
 
 let accumulatedEXP = 0; //Gets reset on game start
 

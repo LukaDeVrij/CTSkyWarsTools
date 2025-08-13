@@ -4,7 +4,9 @@
 import axios from "axios";
 import Promise from "../../PromiseV2";
 import { setTimeout, clearTimeout } from "../../setTimeout/index";
-import settings from "../amaterasu/config.js";
+import settings from "../amaterasu/config";
+
+let title = Scoreboard.getTitle(); // Maybe fixes a bug
 
 let cache = {};
 let fetchings = 0;
