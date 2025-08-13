@@ -2,7 +2,7 @@
     "name": "CTSkyWarsTools",
     "creator": "LifelessNerd",
     "description": "Suite of SkyWarsTools",
-    "version": "Beta-1.0",
+    "version": "0.1",
     "entry": "index.js",
     "$schema": "../imports/CTAutocomplete/schema.json",
     "requires": ["Amaterasu", "PogData", "setTimeout", "PromiseV2", "axios"]
