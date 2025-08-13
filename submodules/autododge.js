@@ -31,10 +31,6 @@ register("worldLoad", () => {
 	}, 500);
 });
 
-const sound = new Sound({ source: "alert.ogg" });
-sound.setCategory("master");
-sound.setVolume(1);
-
 //Cancels dodging if the player is sneaking
 register("step", () => {
 	if (Player.isSneaking() && dodgingEngaged) {
@@ -112,7 +108,17 @@ function initiateDodgeCheck() {
 		ChatLib.chat("&aMap &e" + map + "&a is on dodge list! Dodging in &e5&a seconds...");
 		ChatLib.chat("&cSNEAK TO CANCEL");
 		Client.showTitle("&cDodging " + map, "SNEAK TO CANCEL", 20, 100, 20);
-		if (settings.autododgeSoundEnabled) sound.play();
+		if (settings.autododgeSoundEnabled) {
+			timeout = setTimeout(() => {
+				World.playSound("random.orb", 1.0, 0.5);
+			}, 1);
+			timeout = setTimeout(() => {
+				World.playSound("random.orb", 1.0, 1);
+			}, 100);
+			timeout = setTimeout(() => {
+				World.playSound("random.orb", 1.0, 1.5);
+			}, 200);
+		}
 
 		// Engage dodge in 5 seconds
 		timeout = setTimeout(() => {

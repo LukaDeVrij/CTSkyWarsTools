@@ -22,5 +22,30 @@
                 "value": true
             }
         ]
+    },
+    {
+        "category": "EXP Display",
+        "settings": [
+            {
+                "type": 6,
+                "name": "experienceEnabled",
+                "value": true
+            },
+            {
+                "type": 6,
+                "name": "experienceShowTemp",
+                "value": false
+            }
+        ]
+    },
+    {
+        "category": "SkyWars Levels",
+        "settings": [
+            {
+                "type": 6,
+                "name": "levelsEnabled",
+                "value": true
+            }
+        ]
     }
 ]
