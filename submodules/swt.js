@@ -63,19 +63,14 @@ register("worldLoad", () => {
 });
 
 register("chat", (player, event) => {
-	console.log("Yup");
 	if (!settings.levelsEnabled) return;
-	console.log(1);
 	if (!isInSkyWars()) return;
-	console.log(2);
 	if (player == Player.getName()) return;
-	console.log(3);
 	if (Object.keys(cache).includes(player)) {
 		let prefix = cache[player];
 		setTabName(prefix, player);
 		return;
 	}
-	console.log(4);
 	fetchSkywars(player).then((data) => {
 		// If it errors, data is undefined, this is handled in functions below
 		let prefix = saveResponseInCache(data, player);
