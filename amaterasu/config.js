@@ -63,13 +63,13 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		configName: "levelsEnabled",
 		title: "Enable SkyWars Levels",
 		description:
-			"Enable automatic SkyWars levels to be shown when joining a game\nYou can still use /swlevel <name> to show someone's level",
+			"Enable automatic SkyWars levels to be shown when joining a game\nYou can use /swlevel <name> to show someone's level regardless",
 		value: true,
 	});
 
 const config = new Settings("CTSkyWarsTools", defaultConf, "data/scheme-vigil.json")
 
-	.setCommand("CTSkyWarsTools", ["swtools", "skywarstools", "ctswt", "ctskywarstools"])
+	.setCommand("CTSkyWarsTools", ["swtools", "swt", "skywarstools", "ctswt", "ctskywarstools"])
 
 	.addMarkdown("About", README)
 

@@ -36,6 +36,7 @@ register("step", () => {
 	if (Player.isSneaking() && dodgingEngaged) {
 		clearTimeout(timeout);
 		ChatLib.chat("&cDodging cancelled!");
+		ChatLib.chat("&aWant to remove this map from the dodge list? Use &6/autododge remove <mapName>");
 		Client.showTitle("", "&cDodging cancelled", 0, 20, 0);
 		dodgingEngaged = false;
 	}

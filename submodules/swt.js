@@ -25,12 +25,12 @@ register("command", (username) => {
 			return;
 		}
 
-		if (data.display.levelFormattedWithBrackets === undefined) {
+		if (data.levelFormattedWithBrackets === undefined) {
 			console.log("Player does not exist or is nicked. (1)");
 			ChatLib.chat("Player does not exist or is nicked. (1)");
 			return;
 		}
-		ChatLib.chat(data.display.levelFormattedWithBrackets);
+		ChatLib.chat(data.levelFormattedWithBrackets);
 	});
 })
 	.setTabCompletions((args) => {
@@ -89,10 +89,10 @@ function fetchSkywars(ign) {
 	fetchings++;
 
 	return axios
-		.get(`https://skywarstools.com/api/skywars?player=${ign}`, {
+		.get(`https://api.skywarstools.com/api/skywars?player=${ign}&automated=true`, {
 			headers: { "User-Agent": "Mozilla/5.0 (ChatTriggers)", "Content-Type": "application/json; charset=UTF-8" },
 		})
-		.then((response) => response.data)
+		.then((response) => response.data.display)
 		.catch((error) => {
 			if (error.response) {
 				console.error("Error: ", JSON.stringify(error.response.data, null, 2));
@@ -127,10 +127,10 @@ function saveResponseInCache(data, player) {
 	let prefix = "";
 	if (!data) {
 		prefix = "&c[?] ";
-	} else if (!data.display.levelFormattedWithBrackets) {
+	} else if (!data.levelFormattedWithBrackets) {
 		prefix = "&c[?] ";
 	} else {
-		prefix = data.display.levelFormattedWithBrackets;
+		prefix = data.levelFormattedWithBrackets;
 	}
 	cache[player] = prefix;
 	return prefix;
