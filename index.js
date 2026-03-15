@@ -2,6 +2,7 @@ const modules = [
     { path: "./submodules/experience", name: "SkyWars Game Experience" },
     { path: "./submodules/swt", name: "SkyWars Levels" },
     { path: "./submodules/autododge", name: "Autododge" },
+    { path: "./submodules/islandfinder", name: "IslandFinder" },
 ];
 
 const loadModules = () => {
