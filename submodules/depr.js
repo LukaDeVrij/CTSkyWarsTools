@@ -1,9 +1,8 @@
-/// <reference types="../imports/CTAutocomplete/asm" />
+/// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
 import { setTimeout, clearTimeout } from "../../setTimeout/index";
 import PogObject from "../../PogData/index";
-
 import settings from "../amaterasu/config";
 
 let dodgingEngaged = false;

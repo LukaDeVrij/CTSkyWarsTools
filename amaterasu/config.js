@@ -1,4 +1,4 @@
-/// <reference types="../imports/CTAutocomplete/asm" />
+/// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
 import Settings from "../../Amaterasu/core/Settings";
@@ -43,6 +43,38 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		value: true,
 	})
 
+	.addTextInput({
+		category: "EXP Display",
+		configName: "experienceDisplayString",
+		title: "Display String",
+		description: "Customize the string that is displayed for the EXP display. Use &d{exp}&r to insert the amount of EXP.",
+		placeHolder: "&6EXP This Game: &d{exp}",
+		value: "&6EXP This Game: &d{exp}",
+	})
+	.addTextInput({
+		category: "EXP Display",
+		configName: "experienceXLoc",
+		title: "X Location",
+		description: "Horizontal location for the EXP display",
+		placeHolder: "0",
+		value: "0",
+	})
+	.addTextInput({
+		category: "EXP Display",
+		configName: "experienceYLoc",
+		title: "Y Location",
+		description: "Vertical location for the EXP display",
+		placeHolder: "5",
+		value: "5",
+	})
+	.addDropDown({
+		category: "EXP Display",
+		configName: "experienceAlign",
+		title: "Alignment",
+		description: "Alignment for the EXP display",
+		options: ["left", "center", "right"],
+		value: "right",
+	})
 	.addSwitch({
 		category: "EXP Display",
 		configName: "experienceEnabled",
