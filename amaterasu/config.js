@@ -89,6 +89,13 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		description: "Only show the display when you die or win a game, instead of always",
 		value: false,
 	})
+	.addSwitch({
+		category: "EXP Display",
+		configName: "experienceShowTempInverted",
+		title: "Show Only In Game",
+		description: "Only show the display when you are in a game, instead of only on death/win",
+		value: false,
+	})
 
 	.addSwitch({
 		category: "SkyWars Levels",

@@ -32,7 +32,7 @@ register("chat", (amount, event) => {
 	.setContains();
 
 register("chat", (event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(false);
+	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? true : false);
 	// We update this once we are in a game, assuming the screen is them the correct size (in fullscreen or whatever)
 	if (gotScreenSize === false) {
 		screenWidth = Renderer.screen.getWidth();
@@ -66,13 +66,13 @@ function myRenderOverlay() {
 }
 
 register("chat", (amount, event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(true);
+	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? false : true);
 })
 	.setCriteria("You won! Want to play again? Click here!")
 	.setContains();
 
 register("chat", (amount, event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(true);
+	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? false : true);
 })
 	.setCriteria("You died! Want to play again? Click here!")
 	.setContains();
