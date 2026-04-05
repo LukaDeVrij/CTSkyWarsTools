@@ -43,6 +43,13 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		value: true,
 	})
 
+	.addSwitch({
+		category: "EXP Display",
+		configName: "experienceEnabled",
+		title: "Enable Experience Display",
+		description: "Show the SkyWars EXP you earned this game",
+		value: true,
+	})
 	.addTextInput({
 		category: "EXP Display",
 		configName: "experienceDisplayString",
@@ -77,23 +84,9 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 	})
 	.addSwitch({
 		category: "EXP Display",
-		configName: "experienceEnabled",
-		title: "Enable Experience Display",
-		description: "Show the SkyWars EXP you earned this game",
-		value: true,
-	})
-	.addSwitch({
-		category: "EXP Display",
 		configName: "experienceShowTemp",
 		title: "Show Only On Death/Win",
-		description: "Only show the display when you die or win a game, instead of always",
-		value: false,
-	})
-	.addSwitch({
-		category: "EXP Display",
-		configName: "experienceShowTempInverted",
-		title: "Show Only In Game",
-		description: "Only show the display when you are in a game, instead of only on death/win",
+		description: "Only show the display when you die or win a game, instead of always, might take a bit to take effect",
 		value: false,
 	})
 

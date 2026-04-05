@@ -32,24 +32,26 @@ register("chat", (amount, event) => {
 	.setContains();
 
 register("chat", (event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? true : false);
+	if (settings.experienceShowTemp) display.setShouldRender(false);
 	// We update this once we are in a game, assuming the screen is them the correct size (in fullscreen or whatever)
 	if (gotScreenSize === false) {
 		screenWidth = Renderer.screen.getWidth();
 		screenHeight = Renderer.screen.getHeight();
-		switch (settings.experienceAlign) {
-			case 0:
-				display.setAlign("left");
-				break;
-			case 1:
-				display.setAlign("center");
-				break;
-			case 2:
-				display.setAlign("right");
-				break;
-		}
+
 		display.setRenderLoc(screenWidth - parseInt(settings.experienceXLoc), parseInt(settings.experienceYLoc));
 		gotScreenSize = true;
+	}
+
+	switch (settings.experienceAlign) {
+		case 0:
+			display.setAlign("left");
+			break;
+		case 1:
+			display.setAlign("center");
+			break;
+		case 2:
+			display.setAlign("right");
+			break;
 	}
 
 	accumulatedEXP = 0;
@@ -66,13 +68,41 @@ function myRenderOverlay() {
 }
 
 register("chat", (amount, event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? false : true);
+	if (settings.experienceShowTemp) display.setShouldRender(true);
 })
 	.setCriteria("You won! Want to play again? Click here!")
 	.setContains();
 
 register("chat", (amount, event) => {
-	if (settings.experienceShowTemp) display.setShouldRender(settings.experienceShowTempInverted ? false : true);
+	if (settings.experienceShowTemp) display.setShouldRender(true);
 })
 	.setCriteria("You died! Want to play again? Click here!")
 	.setContains();
+
+// Live update for config changes
+settings.getConfig().registerListener("experienceEnabled", (oldText, newText) => {
+	display.setShouldRender(newText);
+});
+settings.getConfig().registerListener("experienceDisplayString", (oldText, newText) => {
+	display.setLine(0, newText.replace("{exp}", accumulatedEXP));
+});
+settings.getConfig().registerListener("experienceXLoc", (oldText, newText) => {
+	display.setRenderLoc(screenWidth - parseInt(newText), parseInt(settings.experienceYLoc));
+});
+settings.getConfig().registerListener("experienceYLoc", (oldText, newText) => {
+	display.setRenderLoc(screenWidth - parseInt(settings.experienceXLoc), parseInt(newText));
+});
+settings.getConfig().registerListener("experienceAlign", (oldText, newText) => {
+	console.log(newText);
+	switch (settings.experienceAlign) {
+		case 0:
+			display.setAlign("left");
+			break;
+		case 1:
+			display.setAlign("center");
+			break;
+		case 2:
+			display.setAlign("right");
+			break;
+	}
+});
