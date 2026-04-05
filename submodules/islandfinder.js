@@ -3,49 +3,94 @@
 import { renderBeacon } from "../../Apelles/index";
 
 let teams = []; // Example team numbers
+let playerIslandX = 0;
+let playerIslandZ = 0;
+let playerTeam = 0;
+let currentMode = "solo";
 
 register("chat", (event) => {
-	console.log("first")
-	let text = event.message.toString();
-	// Extract all team numbers as numbers, or set to empty array if none found
-	const matches = text.match(/Team #(\d+)/g);
-	teams = matches ? matches.map((t) => Number(t.replace("Team #", ""))) : [];
+	// Save position of your starting island for this game
+	playerIslandX = Player.getX();
+	playerIslandZ = Player.getZ();
 })
-	.setCriteria("Mode: SOLO")
+	.setCriteria("&r&eCages opened! &r&cFIGHT!&r")
 	.setContains();
 
-register("chat", (team, event) => {
-	teams = teams.concat(team); // Add the new team to the existing list
+register("chat", (mode, event) => {
+	teams = [];
+	currentMode = mode.toLowerCase();
 })
-	.setCriteria("Team #${amount}: ")
+	.setCriteria("Mode: ${mode}")
+	.setContains();
+
+register("chat", (team, players, event) => {
+	teams = teams.concat(team); // Add the new team to the existing list
+
+	// Figure out which team we are
+	let playerName = Player.getName();
+	if (players.includes(playerName)) {
+		// We are in this team
+		playerTeam = team;
+		console.log("Player is on team " + team);
+
+		chatTimeout = setTimeout(() => {
+			switch (currentMode) {
+				case "solo":
+					displayTeamPositions(12, event);
+					break;
+				case "teams":
+					displayTeamPositions(12, event);
+					break;
+				case "mini":
+					displayTeamPositions(4, event);
+					break;
+				default:
+					displayTeamPositions(99999, event);
+					break;
+			}
+		}, 1);
+	}
+	event.setCanceled(true);
+})
+	.setCriteria("Team #${amount}: ${players}")
 	.setContains();
 
 register("renderWorld", myWorldRender);
 
-const TOTAL_TEAMS = 12;
-const RADIUS = 50;
-
-function getIslandOffset(teamNumber, totalTeams) {
-	const angle = ((teamNumber - 1) / totalTeams) * 2 * Math.PI;
-	return {
-		x: Math.sin(angle) * RADIUS,
-		z: -Math.cos(angle) * RADIUS, // North = -Z in Minecraft
-	};
-}
-
 function myWorldRender() {
 	const colour = [1, 0, 0, 1];
+	if (playerTeam !== 0) renderBeacon(colour, playerIslandX, 0, playerIslandZ);
+}
+
+function displayTeamPositions(maxPlayers, event) {
+	ChatLib.chat("&cYour team: " + playerTeam);
 	for (let i = 0; i < teams.length; i++) {
-		let teamNum = teams[i];
-		let offset = getIslandOffset(teamNum, TOTAL_TEAMS);
-		renderBeacon(colour, 0 + offset.x, Player.getY(), 0 + offset.z);
+		if (teams[i] == playerTeam) break;
+
+		let offset = teams[i] - playerTeam;
+		let direction = offset > 0 ? "right" : "left";
+		offset = Math.abs(offset);
+
+		// If going the other way around is shorter, use that instead
+		if (offset > maxPlayers / 2) {
+			offset = maxPlayers - offset;
+			direction = direction === "right" ? "left" : "right";
+		}
+		let suffix = new TextComponent(" (" + offset + " islands " + direction + " of you)");
+
+		const msg = ChatLib.getChatMessage(event, true);
+		ChatLib.chat(new Message(msg).addTextComponent(suffix));
+		
 	}
 }
 
 register("worldLoad", () => {
-
 	if (typeof worldLoadTimeout !== "undefined") clearTimeout(worldLoadTimeout);
 	worldLoadTimeout = setTimeout(() => {
 		teams = []; // Reset teams on world load
+		playerTeam = 0; // Reset player team on world load
+		playerIslandX = 0;
+		playerIslandZ = 0;
 	}, 500);
 });
+
