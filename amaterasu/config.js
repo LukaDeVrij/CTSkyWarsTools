@@ -97,6 +97,21 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		description:
 			"Enable automatic SkyWars levels to be shown when joining a game\nYou can use /swlevel <name> to show someone's level regardless",
 		value: true,
+	})
+
+	.addSwitch({
+		category: "Island Finder",
+		configName: "islandFinderEnabled",
+		title: "Enable Island Finder",
+		description: "On /who, tells you which team you're on and where the other teams are relative to you",
+		value: true,
+	})
+	.addSwitch({
+		category: "Island Finder",
+		configName: "islandFinderBeacon",
+		title: "Render Island Beacon",
+		description: "On /who Renders a beacon on your island",
+		value: true,
 	});
 
 const config = new Settings("CTSkyWarsTools", defaultConf, "data/scheme-vigil.json")

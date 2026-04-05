@@ -1,6 +1,7 @@
 /// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 import { renderBeacon } from "../../Apelles/index";
+import settings from "../amaterasu/config";
 
 let teams = []; // Example team numbers
 let playerIslandX = 0;
@@ -26,6 +27,8 @@ register("chat", (mode, event) => {
 let teamMessages = {}; // Store each team's raw chat message keyed by team number
 
 register("chat", (team, players, event) => {
+	if (!settings.islandFinderEnabled) return;
+	
 	team = parseInt(team); // Ensure it's a number
 	teams[team] = players; // Store players under their team number
 
@@ -62,7 +65,9 @@ register("renderWorld", myWorldRender);
 
 function myWorldRender() {
 	const colour = [1, 0, 0, 1];
-	if (playerTeam !== 0) renderBeacon(colour, playerIslandX, 0, playerIslandZ);
+	if (playerTeam !== 0 && settings.islandFinderBeacon) {
+		renderBeacon(colour, playerIslandX, 0, playerIslandZ);
+	}
 }
 function displayTeamPositions(maxPlayers) {
 	ChatLib.chat("&cYour team: " + playerTeam);
@@ -70,12 +75,11 @@ function displayTeamPositions(maxPlayers) {
 	for (let i = 0; i < keys.length; i++) {
 		let teamNum = parseInt(keys[i]);
 		if (teamNum === playerTeam) {
-
 			let suffix = new TextComponent(" (You)");
 			let msg = teamMessages[teamNum];
 			ChatLib.chat(new Message(msg).addTextComponent(suffix));
 			continue;
-		};
+		}
 
 		let offset = teamNum - playerTeam;
 		let direction = offset > 0 ? "right" : "left";
