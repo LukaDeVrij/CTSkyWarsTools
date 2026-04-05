@@ -1,4 +1,4 @@
-/// <reference types="../imports/CTAutocomplete/asm" />
+/// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 import { renderBeacon } from "../../Apelles/index";
 
@@ -23,36 +23,39 @@ register("chat", (mode, event) => {
 	.setCriteria("Mode: ${mode}")
 	.setContains();
 
-register("chat", (team, players, event) => {
-	teams = teams.concat(team); // Add the new team to the existing list
+let teamMessages = {}; // Store each team's raw chat message keyed by team number
 
-	// Figure out which team we are
+register("chat", (team, players, event) => {
+	team = parseInt(team); // Ensure it's a number
+	teams[team] = players; // Store players under their team number
+
+	teamMessages[team] = ChatLib.getChatMessage(event, true);
+
 	let playerName = Player.getName();
 	if (players.includes(playerName)) {
-		// We are in this team
 		playerTeam = team;
 		console.log("Player is on team " + team);
 
 		chatTimeout = setTimeout(() => {
 			switch (currentMode) {
 				case "solo":
-					displayTeamPositions(12, event);
+					displayTeamPositions(12);
 					break;
 				case "teams":
-					displayTeamPositions(12, event);
+					displayTeamPositions(12);
 					break;
 				case "mini":
-					displayTeamPositions(4, event);
+					displayTeamPositions(4);
 					break;
 				default:
-					displayTeamPositions(99999, event);
+					displayTeamPositions(99999);
 					break;
 			}
 		}, 1);
 	}
 	event.setCanceled(true);
 })
-	.setCriteria("Team #${amount}: ${players}")
+	.setCriteria("Team #${team}: ${players}")
 	.setContains();
 
 register("renderWorld", myWorldRender);
@@ -61,36 +64,41 @@ function myWorldRender() {
 	const colour = [1, 0, 0, 1];
 	if (playerTeam !== 0) renderBeacon(colour, playerIslandX, 0, playerIslandZ);
 }
-
-function displayTeamPositions(maxPlayers, event) {
+function displayTeamPositions(maxPlayers) {
 	ChatLib.chat("&cYour team: " + playerTeam);
-	for (let i = 0; i < teams.length; i++) {
-		if (teams[i] == playerTeam) break;
+	let keys = Object.keys(teams);
+	for (let i = 0; i < keys.length; i++) {
+		let teamNum = parseInt(keys[i]);
+		if (teamNum === playerTeam) {
 
-		let offset = teams[i] - playerTeam;
+			let suffix = new TextComponent(" (You)");
+			let msg = teamMessages[teamNum];
+			ChatLib.chat(new Message(msg).addTextComponent(suffix));
+			continue;
+		};
+
+		let offset = teamNum - playerTeam;
 		let direction = offset > 0 ? "right" : "left";
 		offset = Math.abs(offset);
 
-		// If going the other way around is shorter, use that instead
 		if (offset > maxPlayers / 2) {
 			offset = maxPlayers - offset;
 			direction = direction === "right" ? "left" : "right";
 		}
-		let suffix = new TextComponent(" (" + offset + " islands " + direction + " of you)");
 
-		const msg = ChatLib.getChatMessage(event, true);
+		let suffix = new TextComponent(" (" + offset + " islands " + direction + " of you)");
+		let msg = teamMessages[teamNum];
 		ChatLib.chat(new Message(msg).addTextComponent(suffix));
-		
 	}
 }
 
 register("worldLoad", () => {
 	if (typeof worldLoadTimeout !== "undefined") clearTimeout(worldLoadTimeout);
 	worldLoadTimeout = setTimeout(() => {
-		teams = []; // Reset teams on world load
+		teams = {}; // Reset teams on world load
 		playerTeam = 0; // Reset player team on world load
 		playerIslandX = 0;
 		playerIslandZ = 0;
+		teamMessages = {};
 	}, 500);
 });
-
