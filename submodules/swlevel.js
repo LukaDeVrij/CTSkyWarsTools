@@ -1,4 +1,4 @@
-/// <reference types="../imports/CTAutocomplete/asm" />
+/// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
 import axios from "axios";
@@ -31,6 +31,7 @@ register("command", (username) => {
 			return;
 		}
 		ChatLib.chat(data.levelFormattedWithBrackets);
+		setTabName(data.levelFormattedWithBrackets, username);
 	});
 })
 	.setTabCompletions((args) => {
@@ -96,6 +97,8 @@ function fetchSkywars(ign) {
 		.catch((error) => {
 			if (error.response) {
 				console.error("Error: ", JSON.stringify(error.response.data, null, 2));
+				let prefix = "&c[?] ";
+				saveResponseInCache(prefix, ign); // 
 			} else if (error.request) {
 				console.error("No response received:", error.request);
 			} else {
@@ -188,3 +191,12 @@ function isInSkyWars() {
 		return false;
 	}
 }
+
+register("chat", (player, action, killer, event) => {
+	if (!isInSkyWars()) return;
+	let prefix = cache[killer];
+	setTabName(prefix, killer);
+
+	setTabName()
+})	.setCriteria("${player} ${action} by ${killer}")
+	.setContains();

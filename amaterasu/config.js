@@ -116,9 +116,10 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 
 const config = new Settings("CTSkyWarsTools", defaultConf, "data/scheme-vigil.json")
 
-	.setCommand("CTSkyWarsTools", ["swtools", "swt", "skywarstools", "ctswt", "ctskywarstools"])
-
 	.addMarkdown("About", README)
+
+	.setCommand("CTSkyWarsTools", ["swtools", "swtconfig", "skywarstools", "ctswt", "ctskywarstools"])
+
 
 	.onOpenGui(() => {
 		// ChatLib.chat("config gui has been opened");
