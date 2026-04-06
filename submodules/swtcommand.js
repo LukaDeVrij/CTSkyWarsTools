@@ -46,7 +46,7 @@ register("command", (arg1, arg2, arg3, arg4, arg5, arg6) => {
 			formatNamesData(data);
 		});
 	}
-	console.log(arg1)
+	console.log(arg1);
 	let needFetchOverall = ["stats", "mining"].includes(arg1.toLowerCase());
 	if (needFetchOverall) {
 		fetchOverall(arg2).then((data) => {
@@ -130,16 +130,37 @@ function formatMiningData(data) {
 	ChatLib.chat(`&6&m--------------------------------------------------------`);
 	ChatLib.chat(`&c&l${data.player} &7- &bMining Stats`);
 	ChatLib.chat(`&8Can be used to estimate how likely a player is to be mining.`);
-	
+
+	const miningKits = [
+		"kit_advanced_solo_enchanter",
+		"kit_supporting_team_enchanter",
+		"kit_advanced_solo_enderman",
+		"kit_attacking_team_enderman",
+		"kit_basic_solo_speleologist",
+		"kit_mining_team_speleologist",
+	];
+
+	const activeKits = [data.stats.activeKit_SOLO, data.stats.activeKit_TEAM, data.stats.activeKit_MINI];
+
 	const blocksBrokenRatio = (data.stats.blocks_broken / data.stats.blocks_placed).toFixed(2);
 	const killWinRatio = (data.stats.kills_solo / (data.stats.wins_solo === 0 ? 1 : data.stats.wins_solo)).toFixed(2);
 	const hasMiningPerks = JSON.stringify(data.stats.perkslot).includes("solo_mining_expertise") ? "Yes" : "No";
-	
+	const survivedPlayersRatio = (data.stats.survived_players / data.stats.kills).toFixed(2);
 	const bbSeverity = blocksBrokenRatio > 0.1 ? "&c(High Risk)" : blocksBrokenRatio > 0.05 ? "&e(Medium Risk)" : "&a(Low Risk)";
 	ChatLib.chat(`&eBlocks Broken Ratio: &b${blocksBrokenRatio} ${bbSeverity}`);
 	const kwrSeverity = killWinRatio < 6 ? "&c(High Risk)" : killWinRatio < 5.5 ? "&e(Medium Risk)" : "&a(Low Risk)";
 	ChatLib.chat(`&eKill/Win Ratio: &b${killWinRatio} ${kwrSeverity}`);
+	const sprSeverity = survivedPlayersRatio > 5 ? "&c(High Risk)" : survivedPlayersRatio > 4 ? "&e(Medium Risk)" : "&a(Low Risk)";
+	ChatLib.chat(`&eSurvived/Kills Ratio: &b${survivedPlayersRatio} ${sprSeverity}`);
 	const miningPerksText = hasMiningPerks === "Yes" ? "&bYes &c(High Risk)" : "&bNo &a(Low Risk)";
 	ChatLib.chat(`&eHas Mining Perks: &b${miningPerksText}`);
+	const hasMiningKits = activeKits.some((kit) => miningKits.includes(kit)) ? "Yes" : "No";
+	const miningKitsText = hasMiningKits === "Yes" ? "&bYes &c(High Risk)" : "&bNo &a(Low Risk)";
+	ChatLib.chat(
+		new TextComponent(`&eActive Mining Kits: &b${miningKitsText}`).setHover(
+			"show_text",
+			`&a${activeKits.filter((kit) => miningKits.includes(kit)).join(", ") || "None"}`,
+		),
+	);
 	ChatLib.chat(`&6&m--------------------------------------------------------`);
 }
