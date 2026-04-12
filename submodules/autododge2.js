@@ -61,6 +61,17 @@ register("chat", (event) => {
 	.setExact();
 
 
+register("chat", (event) => {
+	if (dodgingEngaged) {
+		clearTimeout(timeout);
+
+		dodgingEngaged = false;
+
+		ChatLib.chat("&cGame started too quickly... Sorry about that!");
+	}
+}).setCriteria("Cages opened! FIGHT!").setExact();
+
+
 // Cancel other locraws, user never wants to see this
 register("chat", (server, event) => {
     event.setCanceled(true);
