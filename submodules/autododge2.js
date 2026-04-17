@@ -60,7 +60,6 @@ register("chat", (event) => {
 	.setCriteria("The game starts in 1 second!")
 	.setExact();
 
-
 register("chat", (event) => {
 	if (dodgingEngaged) {
 		clearTimeout(timeout);
@@ -69,29 +68,32 @@ register("chat", (event) => {
 
 		ChatLib.chat("&cGame started too quickly... Sorry about that!");
 	}
-}).setCriteria("Cages opened! FIGHT!").setExact();
-
+})
+	.setCriteria("Cages opened! FIGHT!")
+	.setExact();
 
 // Cancel other locraws, user never wants to see this
 register("chat", (server, event) => {
-    event.setCanceled(true);
-}).setCriteria('{"server":"${server}"').setContains();
+	event.setCanceled(true);
+})
+	.setCriteria('{"server":"${server}"')
+	.setContains();
 
 // Listen for the locraw with map info, this is the only one we want
 register("chat", (server, gametype, mode, map, event) => {
-    event.setCanceled(true);
+	event.setCanceled(true);
 	if (!settings.autododgeEnabled) return;
 	if (gametype !== "SKYWARS") return;
 
 	if (!dodgeMapsData.dodgeList.includes(map)) {
-		console.log(map + " is not in the dodge list");
+		console.log("[CTSWT]  " + map + " is not in the dodge list");
 		return;
 	}
 
-    let command = "play " + mode;
+	let command = "play " + mode;
 
 	// We dodging now
-    dodgingEngaged = true;
+	dodgingEngaged = true;
 	ChatLib.chat("&aMap &e" + map + "&a is on dodge list! Dodging in &e5&a seconds...");
 	ChatLib.chat("&cSNEAK TO CANCEL");
 	Client.showTitle("&cDodging " + map, "SNEAK TO CANCEL", 20, 100, 20);
@@ -112,15 +114,14 @@ register("chat", (server, gametype, mode, map, event) => {
 		if (shiftChecker) {
 			clearInterval(shiftChecker);
 		}
-        console.log(command)
+		console.log("[CTSWT] Executing " + command);
 		ChatLib.command(command);
-        dodgingEngaged = false;
+		dodgingEngaged = false;
 	}, 4500);
 })
 	.setCriteria('{"server":"${server}","gametype":"${gametype}","mode":"${mode}","map":"${map}"}')
 	.setExact();
 // {"server":"mini157AW","gametype":"SKYWARS","mode":"solo_normal","map":"Firelink Shrine"}
-
 
 // Player interaction
 register("command", (...args) => {

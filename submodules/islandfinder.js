@@ -37,7 +37,7 @@ register("chat", (team, players, event) => {
 	let playerName = Player.getName();
 	if (players.includes(playerName)) {
 		playerTeam = team;
-		console.log("Player is on team " + team);
+		console.log("[CTSWT] Player is on team " + team);
 
 		chatTimeout = setTimeout(() => {
 			switch (currentMode) {

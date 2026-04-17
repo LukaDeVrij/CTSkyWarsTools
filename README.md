@@ -1,5 +1,6 @@
 # CTSkyWarsTools
 A ChatTrigger with various tools that come in handy when playing SkyWars
+Version 0.2.0
 
 > By LifelessNerd
 

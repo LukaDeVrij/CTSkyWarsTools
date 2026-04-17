@@ -21,6 +21,10 @@ register("command", (arg1, arg2, arg3, arg4, arg5, arg6) => {
 		ChatLib.command(`autododge ${arg2 || ""}`, true);
 		return;
 	}
+	if (arg1.toLowerCase() === "info") {
+		formatInfo();
+		return;
+	}
 	if (arg2 === undefined) {
 		ChatLib.chat("&cUsername is missing or undefined.");
 		return;
@@ -33,31 +37,30 @@ register("command", (arg1, arg2, arg3, arg4, arg5, arg6) => {
 	if (arg1.toLowerCase() === "names") {
 		fetchNames(arg2).then((data) => {
 			if (!data) {
-				console.log("Player does not exist or is nicked. (2)");
+				console.log("[CTSWT] Player does not exist or is nicked. (2)");
 				ChatLib.chat("Player does not exist or is nicked. (2)");
 				return;
 			}
 
 			if (data.player === undefined) {
-				console.log("Player does not exist or is nicked. (1)");
+				console.log("[CTSWT] Player does not exist or is nicked. (1)");
 				ChatLib.chat("Player does not exist or is nicked. (1)");
 				return;
 			}
 			formatNamesData(data);
 		});
 	}
-	console.log(arg1);
 	let needFetchOverall = ["stats", "mining"].includes(arg1.toLowerCase());
 	if (needFetchOverall) {
 		fetchOverall(arg2).then((data) => {
 			if (!data) {
-				console.log("Player does not exist or is nicked. (2)");
+				console.log("[CTSWT] Player does not exist or is nicked. (2)");
 				ChatLib.chat("Player does not exist or is nicked. (2)");
 				return;
 			}
 
 			if (data.player === undefined) {
-				console.log("Player does not exist or is nicked. (1)");
+				console.log("[CTSWT] Player does not exist or is nicked. (1)");
 				ChatLib.chat("Player does not exist or is nicked. (1)");
 				return;
 			}
@@ -94,6 +97,7 @@ function formatHelp() {
 	ChatLib.chat(`&b/swt level <player> &7- Fetches level of the player`);
 	ChatLib.chat(`&b/swt stats <player> &7- Fetches overall stats of the player`);
 	ChatLib.chat(`&b/swt autododge &7- Opens the autododge list`);
+	ChatLib.chat(`&b/swt info &7- Get general info about the mod`);
 	ChatLib.chat(`&6&m--------------------------------------------------------`);
 }
 
@@ -162,5 +166,14 @@ function formatMiningData(data) {
 			`&a${activeKits.filter((kit) => miningKits.includes(kit)).join(", ") || "None"}`,
 		),
 	);
+	ChatLib.chat(`&6&m--------------------------------------------------------`);
+}
+
+function formatInfo() {
+	let metadata = JSON.parse(FileLib.read("CTSkyWarsTools", "metadata.json"));
+	ChatLib.chat(`&6&m--------------------------------------------------------`);
+	ChatLib.chat(`&eVersion: &b${metadata.version}`);
+	ChatLib.chat("&eAuthor: &6Luka // LifelessNerd");
+	ChatLib.chat("&eInfo:&6 https://skywarstools.com/tools/CTSkyWarsTools");
 	ChatLib.chat(`&6&m--------------------------------------------------------`);
 }

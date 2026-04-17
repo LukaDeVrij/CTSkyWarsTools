@@ -79,6 +79,16 @@ register("chat", (amount, event) => {
 	.setCriteria("You died! Want to play again? Click here!")
 	.setContains();
 
+register("chat", (server, gametype, mode, map, event) => {
+	if (gametype !== "SKYWARS") {
+		display.setShouldRender(false);
+	} else {
+		display.setShouldRender(true);
+	}
+})
+	.setCriteria('{"server":"${server}","gametype":"${gametype}","mode":"${mode}","map":"${map}"}')
+	.setExact();
+
 // Live update for config changes
 settings.getConfig().registerListener("experienceEnabled", (oldText, newText) => {
 	display.setShouldRender(newText);
@@ -93,7 +103,6 @@ settings.getConfig().registerListener("experienceYLoc", (oldText, newText) => {
 	display.setRenderLoc(screenWidth - parseInt(settings.experienceXLoc), parseInt(newText));
 });
 settings.getConfig().registerListener("experienceAlign", (oldText, newText) => {
-	console.log(newText);
 	switch (settings.experienceAlign) {
 		case 0:
 			display.setAlign("left");

@@ -4,6 +4,7 @@ const modules = [
     { path: "./submodules/autododge2", name: "Autododge" },
     { path: "./submodules/islandfinder", name: "IslandFinder" },
     { path: "./submodules/swtcommand", name: "SkyWars Stats Command" },
+    { path: "./submodules/versioncheck", name: "Version Check" }
 ];
 
 const loadModules = () => {
@@ -19,10 +20,10 @@ const loadModules = () => {
             total += elapsed;
         } catch (e) {
             errors++;
-            console.log(`&cError loading ${name} module: ${e.stack || e}`);
+            console.log(`[CTSWT] &cError loading ${name} module: ${e.stack || e}`);
         }
     }
-    console.log(`Loaded ${modules.length - errors}/${modules.length} modules in ${total}ms`);
+    console.log(`[CTSWT] Loaded ${modules.length - errors}/${modules.length} modules in ${total}ms`);
 };
 
 require('./amaterasu/config');

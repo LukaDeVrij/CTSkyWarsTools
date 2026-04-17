@@ -21,13 +21,13 @@ register("command", (username) => {
 	fetchSkywars(username).then((data) => {
 		if (!data) {
 			console.log("Player does not exist or is nicked. (2)");
-			ChatLib.chat("Player does not exist or is nicked. (2)");
+			ChatLib.chat("[CTSWT] Player does not exist or is nicked. (2)");
 			return;
 		}
 
 		if (data.levelFormattedWithBrackets === undefined) {
 			console.log("Player does not exist or is nicked. (1)");
-			ChatLib.chat("Player does not exist or is nicked. (1)");
+			ChatLib.chat("[CTSWT] Player does not exist or is nicked. (1)");
 			return;
 		}
 		ChatLib.chat(data.levelFormattedWithBrackets);
@@ -86,7 +86,7 @@ function fetchSkywars(ign) {
 		console.error("IGN is missing or undefined.");
 		return Promise.resolve(null);
 	}
-	console.log("Fetching data for " + ign);
+	console.log("[CTSWT] Fetching data for " + ign);
 	fetchings++;
 
 	return axios

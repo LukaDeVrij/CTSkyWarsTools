@@ -100,17 +100,17 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 	})
 
 	.addSwitch({
-		category: "Island Finder",
+		category: "Enhanced Who",
 		configName: "islandFinderEnabled",
-		title: "Enable Island Finder",
-		description: "On /who, tells you which team you're on and where the other teams are relative to you",
+		title: "Enable Enhanced Who",
+		description: "On /who, tells you where the other teams are relative to you",
 		value: true,
 	})
 	.addSwitch({
-		category: "Island Finder",
+		category: "Enhanced Who",
 		configName: "islandFinderBeacon",
 		title: "Render Island Beacon",
-		description: "On /who Renders a beacon on your island",
+		description: "On /who, renders a beacon on your island",
 		value: true,
 	});
 

@@ -43,11 +43,31 @@ function fetchNames(ign) {
 		});
 }
 
+function fetchVersion() {
+	return axios
+		.get("https://api.skywarstools.com/api/ct/lastVersion", {
+			headers: { "User-Agent": "Mozilla/5.0 (ChatTriggers)", "Content-Type": "application/json; charset=UTF-8" },
+		})
+		.then((response) => response.data)
+		.catch((error) => {
+			if (error.response) {
+				console.error("Error: ", JSON.stringify(error.response.data, null, 2));
+			} else if (error.request) {
+				console.error("No response received:", error.request);
+			} else {
+				console.error("Request setup error:", error.message);
+			}
+			return null;
+		});
+}
+
 // Expose for CommonJS consumers and Rhino global scope.
 module.exports = {
 	fetchOverall,
 	fetchNames,
+	fetchVersion,
 };
 
 global.fetchOverall = fetchOverall;
 global.fetchNames = fetchNames;
+global.fetchVersion = fetchVersion;
