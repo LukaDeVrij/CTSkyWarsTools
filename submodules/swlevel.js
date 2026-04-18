@@ -6,8 +6,6 @@ import Promise from "../../PromiseV2";
 import { setTimeout, clearTimeout } from "../../setTimeout/index";
 import settings from "../amaterasu/config";
 
-let title = Scoreboard.getTitle(); // Maybe fixes a bug
-
 let cache = {};
 let fetchings = 0;
 let setAmount = 0;
@@ -20,14 +18,14 @@ register("command", (username) => {
 	}
 	fetchSkywars(username).then((data) => {
 		if (!data) {
-			console.log("Player does not exist or is nicked. (2)");
-			ChatLib.chat("[CTSWT] Player does not exist or is nicked. (2)");
+			console.log("[CTSWT] Player does not exist or is nicked. (2)");
+			ChatLib.chat("Player does not exist or is nicked. (2)");
 			return;
 		}
 
 		if (data.levelFormattedWithBrackets === undefined) {
-			console.log("Player does not exist or is nicked. (1)");
-			ChatLib.chat("[CTSWT] Player does not exist or is nicked. (1)");
+			console.log("[CTSWT] Player does not exist or is nicked. (1)");
+			ChatLib.chat("Player does not exist or is nicked. (1)");
 			return;
 		}
 		ChatLib.chat(data.levelFormattedWithBrackets);
@@ -158,7 +156,7 @@ function setTabName(prefix, playerName) {
 		currentTabNameWithPrefix = new TextComponent(prefix + displayName);
 	}
 	player.setTabDisplayName(currentTabNameWithPrefix);
-	console.log("Set tab name for " + playerName + " to " + prefix);
+	console.log("[CTSWT] Set tab name for " + playerName + " to " + prefix);
 	setAmount++;
 }
 

@@ -55,8 +55,9 @@ register("chat", (team, players, event) => {
 					break;
 			}
 		}, 1);
+		event.setCanceled(true);
 	}
-	event.setCanceled(true);
+	
 })
 	.setCriteria("Team #${team}: ${players}")
 	.setContains();

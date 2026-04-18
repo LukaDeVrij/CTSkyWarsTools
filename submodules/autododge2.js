@@ -86,7 +86,7 @@ register("chat", (server, gametype, mode, map, event) => {
 	if (gametype !== "SKYWARS") return;
 
 	if (!dodgeMapsData.dodgeList.includes(map)) {
-		console.log("[CTSWT]  " + map + " is not in the dodge list");
+		console.log("[CTSWT] " + map + " is not in the dodge list");
 		return;
 	}
 

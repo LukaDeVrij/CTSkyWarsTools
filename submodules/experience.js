@@ -103,7 +103,7 @@ settings.getConfig().registerListener("experienceYLoc", (oldText, newText) => {
 	display.setRenderLoc(screenWidth - parseInt(settings.experienceXLoc), parseInt(newText));
 });
 settings.getConfig().registerListener("experienceAlign", (oldText, newText) => {
-	switch (settings.experienceAlign) {
+	switch (newText) {
 		case 0:
 			display.setAlign("left");
 			break;

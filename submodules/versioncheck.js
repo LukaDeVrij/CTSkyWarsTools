@@ -50,7 +50,9 @@ register("worldload", () => {
 
 		if (upToDate) {
 			ChatLib.chat("&aYou are using the latest version of CTSkyWarsTools! (&f" + currentVersion + "&a)");
+			console.log("[CTSWT] Module is up to date with latest public release version!")
 		} else if (versionComparison > 0) {
+			console.log("[CTSWT] Module version is higher than latest public release version.");
 			ChatLib.chat("&6&m--------------------------------------------------------");
 			ChatLib.chat("&e&lYou are running a beta of CTSkyWarsTools.");
 			ChatLib.chat(`&7Currently installed:&f ${currentVersion}`);
@@ -58,6 +60,7 @@ register("worldload", () => {
 			ChatLib.chat(`&6Thanks for testing!`);
 			ChatLib.chat("&6&m--------------------------------------------------------");
 		} else {
+			console.log("[CTSWT] This version of the CTSkyWarsTools module is outdated! Download the latest please!")
 			ChatLib.chat(`&6&m--------------------------------------------------------`);
 			ChatLib.chat("&c&lA new version is available for CTSkyWarsTools!");
 			ChatLib.chat(`&7Current:&f ${currentVersion}`);

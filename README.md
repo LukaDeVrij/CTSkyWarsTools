@@ -1,10 +1,12 @@
 # CTSkyWarsTools
 A ChatTrigger with various tools that come in handy when playing SkyWars
+
 Version 0.2.0
 
-> By LifelessNerd
+> By Luka // LifelessNerd 
 
-Open the config using /swt or /swtools
+See all commands with /swt
+Open config with /swt config
 
 ### Features
 This mod consist of the following modules:
@@ -17,14 +19,18 @@ This mod consist of the following modules:
 - EXP Display
 
     *Show the EXP you get in games before they end, or after you've died*
+- Enchanced Who
+
+    *Helps in finding teams on islands relative to your island*
+- Stats Commands
+
+    *Various commands in seeing a player's SkyWars statistics*
 
 ## Options
-Type /swt or /swtools to get a range of options of these modules. You can enable/disable them, aswell as other module-specific options.
+Type /swt config to get a range of options of these modules. You can enable/disable them, aswell as other module-specific options.
 
 ## Known issues
 - Levels might appear double, and some may be missing. This is due to a combination of restrictions in ChatTriggers, as well as the time permitted to fetch these data in the pre-game.
-- Autododge may not function when you are very laggy. I use the sidebar scoreboard to get the map name, which in some cases can take very long to load. If this is the case, please add an Issue on Github, and I will try to find a workaround.
-
 
 ## Attributions
 This ChatTrigger uses the following external dependencies:

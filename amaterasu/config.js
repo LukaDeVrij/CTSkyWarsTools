@@ -80,7 +80,7 @@ const defaultConf = new DefaultConfig("CTSkyWarsTools", "data/settings.json")
 		title: "Alignment",
 		description: "Alignment for the EXP display",
 		options: ["left", "center", "right"],
-		value: "right",
+		value: 2,
 	})
 	.addSwitch({
 		category: "EXP Display",
