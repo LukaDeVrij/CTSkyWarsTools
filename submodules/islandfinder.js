@@ -8,6 +8,7 @@ let playerIslandX = 0;
 let playerIslandZ = 0;
 let playerTeam = 0;
 let currentMode = "solo";
+let playerDied = false;
 
 register("chat", (event) => {
 	// Save position of your starting island for this game
@@ -28,7 +29,13 @@ let teamMessages = {}; // Store each team's raw chat message keyed by team numbe
 
 register("chat", (team, players, event) => {
 	if (!settings.islandFinderEnabled) return;
-	
+	if (playerDied && currentMode == "solo") {
+		console.log("[CTSWT] Player is dead in solo mode, skipping replacing /who message.");
+		event.setCanceled(false);
+		return;
+		
+	} // Don't update teams if player is dead in solo mode, this will prevent nothing showing up(bc the lpayer is not in a team anymoe)
+
 	team = parseInt(team); // Ensure it's a number
 	teams[team] = players; // Store players under their team number
 
@@ -55,13 +62,23 @@ register("chat", (team, players, event) => {
 					break;
 			}
 		}, 1);
-		event.setCanceled(true);
 	}
-	
+	event.setCanceled(true);
 })
 	.setCriteria("Team #${team}: ${players}")
 	.setContains();
 
+register("chat", (event) => {
+	playerDied = true;
+})
+	.setCriteria("You died! Want to play again? Click here!")
+	.setContains();
+register("chat", (event) => {
+	playerDied = false;
+})
+	.setCriteria("Cages opened! FIGHT!")
+	.setContains();
+	
 register("renderWorld", myWorldRender);
 
 function myWorldRender() {
