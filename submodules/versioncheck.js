@@ -37,9 +37,17 @@ register("worldload", () => {
 	fetchVersion().then((response) => {
 		
 		console.log(response.success ? "[CTSWT] Successfully fetched version data." : "[CTSWT] Failed to fetch version data.");
-		latestVersion = response.releases[0].tag_name;
+		let releases = response.releases;
+		let firstStableRelease = null;
+		for (let i = 0; i < releases.length; i++) {
+			if (!releases[i].prerelease) {
+				firstStableRelease = releases[i];
+				break;
+			}
+		}
+		latestVersion = firstStableRelease.tag_name;
 		currentVersion = metadata.version;
-		latestVersionURL = response.releases[0].html_url;
+		latestVersionURL = firstStableRelease.html_url;
 		let versionComparison = compareVersions(currentVersion, latestVersion);
 
 		if (versionComparison === 0) {
