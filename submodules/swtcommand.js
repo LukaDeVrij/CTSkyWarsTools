@@ -87,6 +87,12 @@ register("command", (arg1, arg2, arg3, arg4, arg5, arg6) => {
 	})
 	.setName("swt");
 
+// /lvl shortcut commands for /swt stats <player>
+register("command", (arg1) => {
+    ChatLib.command(`swt stats ${arg1 || ""}`, true);
+    return;
+}).setName("lvl");
+
 function formatHelp() {
 	ChatLib.chat(`&6&m--------------------------------------------------------`);
 	ChatLib.chat(`&aCTSkyWarsTools &b- &bA collection of tools for SkyWars`);

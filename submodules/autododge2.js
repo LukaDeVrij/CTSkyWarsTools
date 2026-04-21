@@ -72,12 +72,6 @@ register("chat", (event) => {
 	.setCriteria("Cages opened! FIGHT!")
 	.setExact();
 
-// Cancel other locraws, user never wants to see this
-register("chat", (server, event) => {
-	event.setCanceled(true);
-})
-	.setCriteria('{"server":"${server}"')
-	.setContains();
 
 // Listen for the locraw with map info, this is the only one we want
 register("chat", (server, gametype, mode, map, event) => {

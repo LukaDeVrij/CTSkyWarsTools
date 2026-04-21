@@ -31,6 +31,13 @@ register("chat", (amount, event) => {
 	.setCriteria("+${amount} SkyWars Experience")
 	.setContains();
 
+register("chat", (mult, event) => {
+	accumulatedEXP *= parseFloat(mult);
+	display.setLine(0, settings.experienceDisplayString.replace("{exp}", accumulatedEXP));
+})
+	.setCriteria("x{mult} SkyWars Experience")
+	.setContains();
+
 register("chat", (event) => {
 	if (settings.experienceShowTemp) display.setShouldRender(false);
 	// We update this once we are in a game, assuming the screen is them the correct size (in fullscreen or whatever)
@@ -79,15 +86,17 @@ register("chat", (amount, event) => {
 	.setCriteria("You died! Want to play again? Click here!")
 	.setContains();
 
-register("chat", (server, gametype, mode, map, event) => {
-	if (gametype !== "SKYWARS") {
-		display.setShouldRender(false);
-	} else {
+register("chat", (server, gametype, event) => {
+	// console.log(gametype);
+	if (gametype.startsWith("SKYWARS")) {
 		display.setShouldRender(true);
+	} else {
+		display.setShouldRender(false);
 	}
+	event.setCanceled(true);
 })
-	.setCriteria('{"server":"${server}","gametype":"${gametype}","mode":"${mode}","map":"${map}"}')
-	.setExact();
+	.setCriteria('{"server":"${server}","gametype":"${gametype}"')
+	.setContains();
 
 // Live update for config changes
 settings.getConfig().registerListener("experienceEnabled", (oldText, newText) => {
