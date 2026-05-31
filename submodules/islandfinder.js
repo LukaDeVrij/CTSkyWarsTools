@@ -51,14 +51,14 @@ register("chat", (team, players, event) => {
 				case "solo":
 					displayTeamPositions(12);
 					break;
-				case "teams":
+				case "team":
 					displayTeamPositions(12);
 					break;
 				case "mini":
 					displayTeamPositions(4);
 					break;
 				default:
-					displayTeamPositions(99999);
+					displayTeamPositions(12);
 					break;
 			}
 		}, 1);
