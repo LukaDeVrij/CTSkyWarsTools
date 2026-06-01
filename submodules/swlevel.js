@@ -1,12 +1,10 @@
-/// <reference types="../imports/CTAutocomplete/asm" />
+/// <reference types="../../CTAutocomplete/asm" />
 /// <reference lib="es2015" />
 
 import axios from "axios";
 import Promise from "../../PromiseV2";
 import { setTimeout, clearTimeout } from "../../setTimeout/index";
 import settings from "../amaterasu/config";
-
-let title = Scoreboard.getTitle(); // Maybe fixes a bug
 
 let cache = {};
 let fetchings = 0;
@@ -20,17 +18,18 @@ register("command", (username) => {
 	}
 	fetchSkywars(username).then((data) => {
 		if (!data) {
-			console.log("Player does not exist or is nicked. (2)");
+			console.log("[CTSWT] Player does not exist or is nicked. (2)");
 			ChatLib.chat("Player does not exist or is nicked. (2)");
 			return;
 		}
 
 		if (data.levelFormattedWithBrackets === undefined) {
-			console.log("Player does not exist or is nicked. (1)");
+			console.log("[CTSWT] Player does not exist or is nicked. (1)");
 			ChatLib.chat("Player does not exist or is nicked. (1)");
 			return;
 		}
 		ChatLib.chat(data.levelFormattedWithBrackets);
+		setTabName(data.levelFormattedWithBrackets, username);
 	});
 })
 	.setTabCompletions((args) => {
@@ -85,7 +84,7 @@ function fetchSkywars(ign) {
 		console.error("IGN is missing or undefined.");
 		return Promise.resolve(null);
 	}
-	console.log("Fetching data for " + ign);
+	console.log("[CTSWT] Fetching data for " + ign);
 	fetchings++;
 
 	return axios
@@ -96,6 +95,8 @@ function fetchSkywars(ign) {
 		.catch((error) => {
 			if (error.response) {
 				console.error("Error: ", JSON.stringify(error.response.data, null, 2));
+				let prefix = "&c[?] ";
+				saveResponseInCache(prefix, ign); // 
 			} else if (error.request) {
 				console.error("No response received:", error.request);
 			} else {
@@ -155,7 +156,7 @@ function setTabName(prefix, playerName) {
 		currentTabNameWithPrefix = new TextComponent(prefix + displayName);
 	}
 	player.setTabDisplayName(currentTabNameWithPrefix);
-	console.log("Set tab name for " + playerName + " to " + prefix);
+	console.log("[CTSWT] Set tab name for " + playerName + " to " + prefix);
 	setAmount++;
 }
 
@@ -188,3 +189,12 @@ function isInSkyWars() {
 		return false;
 	}
 }
+
+register("chat", (player, action, killer, event) => {
+	if (!isInSkyWars()) return;
+	let prefix = cache[killer];
+	setTabName(prefix, killer);
+
+	setTabName()
+})	.setCriteria("${player} ${action} by ${killer}")
+	.setContains();
